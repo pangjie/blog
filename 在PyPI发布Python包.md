@@ -1,38 +1,32 @@
 # 在PyPI发布Python包
 
-PyPI在2017年修改了发布规则，到2018年6月，许多发包攻略并未更新，因此在这里补充一点内容。
+PyPI在2017年修改了发布规则，到2018年6月，许多发包攻略并未更新，因此在这里补充一点内容后，总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到。](https://packaging.python.org/guides/distributing-packages-using-setuptools)简单地说，发布一个Python包到PyPI，需要编写代码，配置```setup.py```, 然后注册PyPI账号并打包上传。
 
+1. 基本包结构的说明，以及配置setup.py（介绍Python包应该符合的结构要求。解释setup.py的内容）
+2. 注册PyPI以及TestPyPI，并配置 ```~/.pypirc``` （发布准备工作）
+3. 打包+发布
 
-[所有步骤的详细信息可在PyPI.org的官方发包指南中找到。](https://packaging.python.org/guides/distributing-packages-using-setuptools)
+## 1. 基本包结构的说明，以及配置```setup.py```
 
-https://packaging.python.org/guides/distributing-packages-using-setuptools/
-
-
-简单地说，发布一个Python包到PyPI需要编写代码, 配置setup.py, 然后注册PyPI账号并打包上传。
-
-1. 基本包结构的说明
-2. 配置工程 setup.py 的说明
-3. 注册PyPI以及TestPyPI，并配置 ~/.pypirc
-4. 打包+发布
-
-1. 基本包结构的说明
+在发布Pyhton包之前，需要建立PyPI要求的包结构，以发布一个名为```helloworld```的Python包为例，一个简单的包结构如下：
 
 ```
 helloworld
+    │
     ├── LICENSE  
-    │       # 软件使用许可证, 例如MIT
+    │       # 软件使用许可证，例如MIT
     │
     ├── MANIFEST.in 
     │       # 打包软件生成源码包时，通常只打包特定类型的文件，比如*.py
     │       # 如果需要打包csv等其他特异类型的文件，需要在这个文件中声明。
-    │       # Python2.6之前的版本中, 特异文件类型必须在这里声明。
+    │       # Python2.6之前的版本中，特异文件类型必须在这里声明。
     │       # Python2.7之后的版本则可以在setup.py中加入特异文件类型的声明。
     │
     ├── README.md 
     │       # 说明文档，可以显示在 PyPI Project Description
-    │       # PyPI Project Description 支持Markdown格式，但是需要使用新版的发布工具:
+    │       # PyPI Project Description 支持Markdown格式，但需要使用新版的发布工具：
     │       #     setuptools > 38.6.0, twine > 1.11.0, wheel > 0.31.0
-    │       # 并需要在 setup() 中增加字段:
+    │       # 并需要在setup()中增加字段：
     │       #     long_description="""# Markdown supported!""",
     │       #     long_description_content_type='text/markdown',
     │       # 升级发布工具 pip install -U twine
@@ -48,11 +42,12 @@ helloworld
     │       # setup.py 的配置信息，如果没有配置需求，留白即可。
     │
     └── setup.py 
-            # 包含发布 Package 所需的全部信息。
+            # 包含发布包所需的全部信息。
 ```
-2. 配置工程 setup.py 说明
 
-```
+配置```setup.py```是发布过程中最关键的步骤，下面将提供一个简单的样板：
+
+```python
 from setuptools import setup, find_packages
 from os import path
 from io import open
@@ -87,22 +82,24 @@ setup(
         'console_scripts': [
             'helloworld=helloworld:main',
         ],
-        # 如果你的包可以单独运行, 则需要再次指出 entry_points.
+        # 如果你的包可以单独运行，例如需要发布的是一个命令行工具（CLT Command Line Tool）, 则需要在此指出 entry_points.
         # 比如单独执行时运行 helloworld 时, 执行 helloworld.py 的 main()
     },
 )
 ```
+使用 ```python setup.py check``` 来检测```setup.py```是否符合发布要求。如果没有任何反馈，则说明```setup.py```符合发布要求。```setup.py```符合发布要求后，请在项目的根目录用 ```pip install -e .``` 进行开发模式下的测试。如果测试达到设计要求，就可以进行发布前的准备工作了。
 
-使用 python setup.py check 来检测setup.py是否符合发布要求。如果没有任何反馈, 则说明setup.py符合发布要求。
-在项目的根目录用 pip install -e . 进行开发模式下的测试。
+## 2. 注册PyPI以及TestPyPI, 配置 ```~/.pypirc```
 
-3. 注册PyPI以及TestPyPI, 配置 ~/.pypirc
-PyPI: https://pypi.org/
-TestPyPI: https://test.pypi.org/
-TestPyPI是PyPI的一个测试实例, 用于发布测试, 与PyPI的功能完全一致, 但不会对PyPI的发布造成任何影响。
-TestPyPI和PyPI可以使用相同的用户名和密码, 但不能使用相同的验证邮箱。
-注册完毕后需要配置 ~/.pypirc
+* [PyPI](https://pypi.org): https://pypi.org/
 
+* [TestPyPI](https://test.pypi.org): https://test.pypi.org/
+
+TestPyPI是PyPI的一个测试实例, 用于发布测试, 与PyPI的功能完全一致, 但不会对PyPI的发布造成任何影响。TestPyPI和PyPI可以使用相同的用户名和密码, 但无法使用相同的验证邮箱。
+
+注册完毕后需要配置 ```~/.pypirc```
+
+```
 [distutils]
 index-servers=
     pypi
@@ -123,14 +120,16 @@ username: test_account
     # pypi的注册用户名
 password: 654321 
     # 密码字段可以不写, 在发布时再输入
+```
 
-4. 打包+发布
-在2017年6月以前, 需要先使用 python setup.py register 然后再进行发布。但新的发布规则已经去掉了这一步骤。
+## 3. 打包+发布
+
+在2017年6月以前, 需要先使用 ```python setup.py register``` 然后再进行发布。但新的发布规则已经去掉了这一步骤。
 
 1. 在打包前，请先在PyPI中搜索包的名称, 以免因为同名而出现403错误。
-2. 使用 python setup.py sdist 生成发布用的源码包。生成的源码包会出现在 dist/helloworld-0.0.1.tar.gz
-3. 进行测试发布：twine upload -r testpypi dist/helloworld-0.1.2.tar.gz
+2. 使用 ```python setup.py sdist``` 生成发布用的源码包。生成的源码包会出现在 ```dist/helloworld-0.0.1.tar.gz```
+3. 进行测试发布：```twine upload -r testpypi dist/helloworld-0.1.2.tar.gz```
 4. 在https://test.pypi.org/检验是否发布成功
-5. 正式发布 twine upload -r pypi dist/helloworld-0.1.2.tar.gz
+5. 正式发布 ```twine upload -r pypi dist/helloworld-0.1.2.tar.gz```
 6. 查看https://pypi.org/ 检验发布是否成功
-7. 如果在pypi.ory搜索包名称, 或者使用pip search搜索包名称无果, 请稍安勿躁, 等待一段时间即可。
+7. 如果在pypi.ory搜索包名称, 或者使用 ```pip search yourpackagename``` 搜索包名称无果, 请稍安勿躁, 等待一段时间即可(数个小时)。
