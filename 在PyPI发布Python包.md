@@ -3,7 +3,8 @@
 PyPI在2017年修改了发布规则，到2018年6月，许多发包攻略并未更新，因此在这里补充一点内容。
 
 
-所有步骤的详细信息可在PyPI.org的官方发包指南中找到。
+[所有步骤的详细信息可在PyPI.org的官方发包指南中找到。](https://packaging.python.org/guides/distributing-packages-using-setuptools)
+
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
 
 
@@ -51,6 +52,7 @@ helloworld
 ```
 2. 配置工程 setup.py 说明
 
+```
 from setuptools import setup, find_packages
 from os import path
 from io import open
@@ -89,6 +91,7 @@ setup(
         # 比如单独执行时运行 helloworld 时, 执行 helloworld.py 的 main()
     },
 )
+```
 
 使用 python setup.py check 来检测setup.py是否符合发布要求。如果没有任何反馈, 则说明setup.py符合发布要求。
 在项目的根目录用 pip install -e . 进行开发模式下的测试。
