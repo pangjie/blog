@@ -1,15 +1,16 @@
 # 在PyPI发布Python包
 
 
-PyPI在2017年修改了发布规则，到2018年6月，许多发包攻略并未更新，因此在这里补充一点内容后，总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说，发布一个Python包到PyPI，需要编写代码，配置```setup.py```, 然后注册PyPI账号并打包上传。
+PyPI在2017年修改了发布规则，到2018年6月，许多[PyPI](https://pypi.org)发布攻略并未更新，因此在这里补充一点内容后，总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说，发布一个Python包到[PyPI](https://pypi.org)，需要编写代码，配置```setup.py```，然后注册PyPI账号并打包上传。
 
-#### 1. 基本包结构的说明，配置```setup.py```（介绍包结构要求。解释```setup.py```的内容）
-#### 2. 注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)，配置 ```~/.pypirc```（发布准备工作）
-#### 3. 打包+发布
+#### 1. [建立基本包结构，配置```setup.py```](## 建立基本包结构，配置```setup.py```)
+#### 2. [发布准备工作，注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)，配置 ```~/.pypirc```](## 发布准备工作，注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)，配置 ```~/.pypirc```)
+#### 3. [打包+发布](## 打包+发布)
+#### 4. [参考资料](## 参考资料)
 
 ---
 
-## 1. 基本包结构的说明，以及配置```setup.py```
+## 1. 建立基本包结构，配置```setup.py```
 
 在发布Pyhton包之前，需要建立[PyPI](https://pypi.org)要求的包结构，并配置好```setup.py```。首先以发布一个名为```helloworld```的Python包为例，一个简单的包结构如下：
 
@@ -93,7 +94,7 @@ setup(
 ```
 ```setup.py```配置完成后，使用 ```python setup.py check``` 来检测```setup.py```是否符合发布要求。如果没有任何反馈，则说明```setup.py```符合发布要求，否则请按照报错信息进行修改。检测正常后，在项目的根目录用 ```pip install -e .``` 安装，在开发模式下对包进行测试。如果测试达到设计要求，就可以开始发布前的准备工作了。
 
-## 2. 注册PyPI以及TestPyPI, 配置 ```~/.pypirc```
+## 2. 发布准备工作，注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)，配置 ```~/.pypirc```
 
 * [PyPI](https://pypi.org): https://pypi.org/
 
