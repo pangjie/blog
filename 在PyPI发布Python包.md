@@ -4,9 +4,9 @@
 PyPI在2017年修改了发布规则，到2018年6月，许多[PyPI](https://pypi.org)发布攻略并未更新，因此在这里补充一点内容后，总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说，发布一个Python包到[PyPI](https://pypi.org)，需要编写代码，配置```setup.py```，然后注册PyPI账号并打包上传。
 
 [1. 建立基本包结构，配置```setup.py```](#1-建立基本包结构配置setuppy)
-#### 2. 发布准备工作，注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)，配置 ```~/.pypirc```
-#### 3. 打包+发布
-#### 4. 参考资料
+[2. 发布准备工作，注册PyPI和TestPyPI，配置 ```~/.pypirc```](#2-发布准备工作注册pypi和testpypi配置-pypirc)
+[3. 打包+发布](#3-打包发布)
+[4. 参考资料](#4-参考资料)
 
 ---
 
