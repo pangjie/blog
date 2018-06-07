@@ -2,9 +2,9 @@
 
 PyPI在2017年修改了发布规则，到2018年6月，许多发包攻略并未更新，因此在这里补充一点内容后，总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说，发布一个Python包到PyPI，需要编写代码，配置```setup.py```, 然后注册PyPI账号并打包上传。
 
-** 1. 基本包结构的说明，以及配置```setup.py```（介绍包结构要求。解释```setup.py```的内容） **
-** 2. 注册PyPI以及TestPyPI，并配置 ```~/.pypirc```（发布准备工作） **
-** 3. 打包+发布 **
+##1. 基本包结构的说明，以及配置```setup.py```（介绍包结构要求。解释```setup.py```的内容）
+##2. 注册PyPI以及TestPyPI，并配置 ```~/.pypirc```（发布准备工作）
+##3. 打包+发布
 
 ## 1. 基本包结构的说明，以及配置```setup.py```
 
@@ -128,9 +128,9 @@ password: 654321
 在2017年6月以前, 需要先使用 ```python setup.py register``` 然后再进行发布。但2017年9月后，新的发布规则已经去掉了这一步骤。到2018年6月为止，官方手册推荐用```twine``` 进行发布，所以推荐用```pip instal twine```进行安装。在发布前，请先在[PyPI](https://pypi.org)中搜索包的名称, 以免因为同名而出现403错误。
 
 1. 使用 ```python setup.py sdist``` 生成发布用的源码包。生成的源码包会出现在 ```dist/helloworld-0.0.1.tar.gz```
-2. 进行测试发布：```twine upload -r testpypi dist/helloworld-0.1.2.tar.gz```
+2. 进行测试发布：```twine upload -r testpypi dist/helloworld-0.0.1.tar.gz```
 3. 在[TestPyPI](https://test.pypi.org)检验是否发布成功
-4. 正式发布 ```twine upload -r pypi dist/helloworld-0.1.2.tar.gz```
+4. 正式发布 ```twine upload -r pypi dist/helloworld-0.0.1.tar.gz```
 5. 查看[PyPI](https://pypi.org)检验发布是否成功
 6. 如果在[PyPI](https://pypi.org)搜索包名称, 或者使用 ```pip search yourpackagename``` 搜索包名称无果, 请稍安勿躁, 等待一段时间即可(数个小时)。
 
