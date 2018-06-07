@@ -1,6 +1,6 @@
 # 在PyPI发布Python包
 
-PyPI在2017年修改了发布规则, 到2018年6月, 许多[PyPI](https://pypi.org)发布攻略并未更新, 因此在这里补充一点内容后, 总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说, 发布一个Python包到[PyPI](https://pypi.org), 需要编写代码, 配置```setup.py```, 然后注册PyPI账号并打包上传。下文将按照这一步骤进行说明：
+PyPI在2017年修改了发布规则, 到2018年6月, 许多[PyPI](https://pypi.org)发布攻略并未更新, 因此在这里补充一点内容后, 总结了一个简化的发布流程。[所有步骤的详细信息可在PyPI.org的官方发包指南中找到](https://packaging.python.org/guides/distributing-packages-using-setuptools)。简单地说, 发布一个Python包到PyPI, 需要编写代码, 配置```setup.py```, 然后注册PyPI账号并打包上传。下文将按照这一步骤进行说明：
 
 [1. 建立基本包结构, 配置```setup.py```](#1-建立基本包结构配置setuppy)
 
@@ -16,7 +16,7 @@ PyPI在2017年修改了发布规则, 到2018年6月, 许多[PyPI](https://pypi.o
 
 ## 1. 建立基本包结构, 配置```setup.py```
 
-在发布Pyhton包之前, 需要建立[PyPI](https://pypi.org)要求的包结构, 并配置好```setup.py```。首先以发布一个名为```helloworld```的Python包为例, 一个简单的包结构如下:
+在发布Pyhton包之前, 需要建立PyPI要求的包结构, 并配置好```setup.py```。首先以发布一个名为```helloworld```的Python包为例, 一个简单的包结构如下:
 
 ```bash
 helloworld
@@ -105,7 +105,7 @@ setup(
 
 * [TestPyPI](https://test.pypi.org): https://test.pypi.org/
 
-[TestPyPI](https://test.pypi.org)是[PyPI](https://pypi.org)的一个测试实例, 用于发布的测试工作, 与[PyPI](https://pypi.org)的功能完全一致, 但不会对[PyPI](https://pypi.org)的发布造成任何影响。请分别注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)。二者可以使用相同的用户名和密码, 但无法使用相同的验证邮箱。注册完毕后, 还需要配置 ```~/.pypirc```, 以便在接下来的步骤中对正式发布与测试发布进行区分。
+TestPyPI是PyPI的一个测试实例, 用于发布的测试工作。 二者的功能完全一致, 但在TestPyPI上的任何发布都不会对PyPI造成任何影响。请分别注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)。二者可以使用相同的用户名和密码, 但无法使用相同的验证邮箱。注册完毕后, 还需要配置 ```~/.pypirc```, 以便在接下来使用```twine```时, 对正式发布与测试发布进行区分。```~/.pypirc```样板如下:
 
 
 ```bash
@@ -138,22 +138,23 @@ password: 654321
 在2017年6月以前, 需要先使用 ```python setup.py register``` 然后再进行发布。但2017年9月后, 新的发布规则已经去掉了这一步骤。目前(2018.06)官方手册推荐用 ```twine``` 进行发布。在发布前, 请先在[PyPI](https://pypi.org)中搜索包的名称, 以免因为同名而出现403错误。
 
 1. 安装发布工具```twine```: ```pip instal twine```
-2. 生成发布用的源码包: ```python setup.py sdist``` 。生成的源码包会出现在 ```dist/helloworld-0.0.1.tar.gz```
+2. 生成发布用的源码包: ```python setup.py sdist``` 生成的源码包会出现在 ```dist/helloworld-0.0.1.tar.gz```
 3. 进行测试发布: ```twine upload -r testpypi dist/helloworld-0.0.1.tar.gz```
 4. 在[TestPyPI](https://test.pypi.org)查验是否发布成功, 下载包, 并进行安装、测试。
 5. 正式发布: ```twine upload -r pypi dist/helloworld-0.0.1.tar.gz```
 6. 在[PyPI](https://pypi.org)查验发布是否成功, 下载包, 并进行安装、测试。
 
-在[PyPI](https://pypi.org)搜索包名称, 或者使用 ```pip search yourpackagename``` 搜索包名称, 如果无法搜索到, 请稍安勿躁, 等待一段时间即可(数个小时)。
+
 
 ## 4. 坑点重申
 
-1. ```setup.py``` 版本号不能重复只用, 即使在PyPI上删除了已经发布的版本, 其版本号也是不能再次使用的。
-2. PyPI会保留所有上传的版本, 但默认会使用版本号最新的, 而不是最近发布的包。[官方推荐的版本号管理规则请看手册](https://packaging.python.org/guides/distributing-packages-using-setuptools)
-3. PyPI上的Project Description需要在```setup.py```中配置```long_description```, 如果想兼容markdown格式, 则需要最新版本的发布工具, 具体要求请查阅上文中对README.md的备注。
-4. 配置 ```~/.pypirc``` 时, 可以去掉```[pypi]```中的```repository```字段, 交给新版```twine```自己决定。此举是为了防止```repository```更动导致发布失败。
-5. 如果某些类型的文件没有被```python setup.py sdist```正确打包, 请在```MANIFEST.in```中申明这些文件的类型, 比如```*.csv```, [申明格式请查阅手册中的模板](https://packaging.python.org/guides/distributing-packages-using-setuptools/#manifest-in)。
-6. ```python setup.py register``` 这一步骤2017年9月后已经被取消了。
+* ```setup.py``` 版本号不能重复使用, 即使在PyPI上删除了已经发布的版本, 其版本号也是不能再次使用的。
+* PyPI会保留所有上传的版本, 但默认会使用版本号最新的, 而不是时序上最近发布的包。[官方推荐的版本号规则请看手册](https://packaging.python.org/guides/distributing-packages-using-setuptools/#choosing-a-versioning-scheme)
+* PyPI上的Project Description需要在```setup.py```中配置```long_description```, 如果想兼容markdown格式, 则需要最新版本的发布工具, 具体要求请查阅上文中对README.md的备注。
+* 配置 ```~/.pypirc``` 时, 可以去掉```[pypi]```中的```repository```字段, 交给```twine```决定。此举是为了防止官方对```repository```更动导致发布失败。
+* 如果某些类型的文件没有被```python setup.py sdist```正确打包, 请在```MANIFEST.in```中申明这些文件的类型, 比如```*.csv```, [申明格式请查阅手册中的模板](https://packaging.python.org/guides/distributing-packages-using-setuptools/#manifest-in)。
+* ```python setup.py register``` 这一步骤2017年9月后已经被取消了。
+* 在[PyPI](https://pypi.org)搜索包名称, 或者使用 ```pip search yourpackagename``` 搜索包名称, 如果无法搜索到, 请稍安勿躁, 等待一段时间即可(数个小时)。即使无法搜索到, 也依然可以使用 ```pip install yourpackagename``` 进行安装。
 
 ## 5. 参考资料
 
