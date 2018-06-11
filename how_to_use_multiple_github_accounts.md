@@ -1,8 +1,8 @@
 # 如何同时使用多个Github账号
 
-简单的说，在一台mac上同时使用多个Github账号，就是通过创建多对密钥，配置```ssh```，使得在本地可以```push```代码到不同的Github账户。下文将按照这一步骤进行说明：
+简单的说，在一台mac上同时使用多个Github账号，就是通过创建多个密钥，配置```ssh```，使得在本地可以```push```代码到不同的Github账户。下文将按照这一步骤进行说明：
 
-[1. 创建RSA密钥](#1-创建RSA密钥)
+[1. 创建RSA密钥](#1-创建rsa密钥)
 
 [2. 配置```ssh```和```git```](#2-配置ssh和git)
 
@@ -15,14 +15,14 @@
 
 ## 1. 创建RSA密钥
 
-同时使用多个Github账号首先需要分别为其创建RSA密钥，并添加到各自账号的 SSH Keys 中。创建RSA密钥的过程可以查询[官方手册](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)。例如为账号```first_account@email.com```创建一个符合github要求的RSA密钥：
+同时使用多个Github账号首先需要分别为其创建RSA密钥，并将密钥中的公钥添加到各自账号的 SSH Keys 中。创建RSA密钥的过程可以查询[官方手册](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)。例如为账号```first_account@email.com```创建一个符合Github要求的RSA密钥：
 
 ```bash
 ssh-keygen -t rsa -b 4096 -C "first_account@email.com" 
     # 为Github账号first_account@email.com创建密钥。
 ```
 
-创建过程中请注意，为了区分密钥与账号的对应关系，不要使用默认目录及名称，请手动指定密钥的名称：
+创建过程中请注意，为了区分密钥与账号的对应关系，不要使用默认目录及名称，请**手动指定密钥的名称**：
 
 ```bash
 Generating public/private rsa key pair.
@@ -34,8 +34,7 @@ Enter passphrase (empty for no passphrase):
 Enter same passphrase again: 
     # 重复密码，如果不需要密码，回车即可跳过。
 ```
-
-生成RSA密钥后，请在对应账号的 Github Settings 里新增 SSH Key，并复制粘贴对应账号的公钥作为新的 SSH key。[相关步骤可以查询官方手册](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account)。然后重复上面的步骤，为另一个Github账号```second_account@email.com```创建密钥：
+创建完成后，生成的密钥分为一个私钥```id_rsa_1```和一个公钥```id_rsa_1.pub```。再次使用```ssh-keygen```为另一个Github账号```second_account@email.com```创建密钥：
 
 ```bash
 ssh-keygen -t rsa -b 4096 -C "second_account@email.com" 
@@ -51,11 +50,12 @@ Enter same passphrase again:
     # 重复密码，如果不需要密码，回车即可跳过。
 ```
 
-此时在默认目录```~/.ssh/```下，有两对密钥，分别对应```first_account@email.com```和```second_account@email.com```。在他们各自的Github Settings里，也已经添加了对应的公钥。
+此时在默认目录```~/.ssh/```下，至少有两对密钥，分别对应```first_account@email.com```和```second_account@email.com```。请在对应账号的 Github Settings 里新增 SSH Key，并复制粘贴对应账号的公钥：```id_rsa_1.pub```和```id_rsa_2.pub```。[相关步骤可以查询官方手册](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account)。
+
 
 ## 2. 配置```ssh```和```git```
 
-完成了上面的步骤后，需要配置```~/.ssh/config```，通过映射关系来指引```git```找到正确的Github账号。
+完成了上面的步骤后，需要配置```~/.ssh/config```，以便通过映射关系来指引```git```找到正确的Github账号。
 
 ```bash
 touch ~/.ssh/config # 如果还没有config文档，则需要创建一个新的
