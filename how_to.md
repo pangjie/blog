@@ -38,7 +38,7 @@ Config the user setting:
 
 ```json
 {
-    "terminal.integrated.shell.osx": "/usr/local/bin/zsh",
-    "terminal.integrated.fontFamily": "Menlo for Powerline",
+  "terminal.integrated.shell.osx": "/usr/local/bin/zsh",
+  "terminal.integrated.fontFamily": "Menlo for Powerline",
 }
 ```
