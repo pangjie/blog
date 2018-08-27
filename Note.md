@@ -1,8 +1,4 @@
-# Regular Note
-
-## Note 1
-
-Something should be noticed.
+# Note
 
 ## Machine Learning
 
