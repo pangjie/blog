@@ -6,6 +6,8 @@
 
 ```pip install python@2``` for python2
 
+It's helpful to read the information given by installing python with Homebrew.
+
 ## zsh: non-standard shell error 2018/08/16
 
 Getting the error when trying to change mac terminal to use zsh:
