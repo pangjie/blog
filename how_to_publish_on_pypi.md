@@ -24,13 +24,13 @@ helloworld
     ├─── LICENSE  
     │        # 软件使用许可证, 例如MIT
     │
-    ├─── MANIFEST.in 
+    ├─── MANIFEST.in
     │        # 打包软件生成源码包时, 通常只打包特定类型的文件, 比如*.py
     │        # 如果需要打包csv等其他特异类型的文件, 需要在这个文件中声明
     │        # Python2.6之前的版本中, 特异文件类型必须在这里声明
     │        # Python2.7之后的版本则可以在setup.py中加入特异文件类型的声明
     │
-    ├─── README.md 
+    ├─── README.md
     │        # 说明文档, 可以显示在 PyPI Project Description
     │        # PyPI Project Description 支持Markdown格式, 但需要使用新版的发布工具:
     │        #     setuptools > 38.6.0, twine > 1.11.0, wheel > 0.31.0
@@ -47,10 +47,10 @@ helloworld
     │       └─── helloworld.py
     │                # 实质的用以实现功能的Python代码, Python包的本体
     │
-    ├─── setup.cfg 
+    ├─── setup.cfg
     │        # setup.py 的配置信息, 如果没有配置需求, 留白即可
     │
-    └─── setup.py 
+    └─── setup.py
              # 包含发布包所需的全部关键信息, 将在下文进行说明
 ```
 
@@ -64,14 +64,14 @@ from io import open
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
-# 读取项目根目录下的 README.md 作为PyPI项目描述（long_description） 
+# 读取项目根目录下的 README.md 作为PyPI项目描述（long_description）
 
 setup(
     name='sampleproject',
     # Required 包名称
     version='0.0.1',
     # Required 包版本, 同一个版本号只能发布一次, 无论是否在PyPI上删除已发布包
-    description='A sample Python project', 
+    description='A sample Python project',
     # Required 简单的包说明, 显示在pip search的说明中
     long_description=long_description,  
     # Optional 可以将包的说明文档 Readme.md 显示在PyPI的项目描述中
@@ -101,36 +101,38 @@ setup(
 
 ## 2. 发布准备工作, 注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org), 配置 ```~/.pypirc```
 
-* [PyPI](https://pypi.org): https://pypi.org/
+* [PyPI](https://pypi.org): <https://pypi.org/>
 
-* [TestPyPI](https://test.pypi.org): https://test.pypi.org/
+* [TestPyPI](https://test.pypi.org): <https://test.pypi.org/>
 
 TestPyPI是PyPI的一个测试实例, 用于发布的测试工作。 二者的功能完全一致, 但在TestPyPI上的任何发布都不会对PyPI造成任何影响。请分别注册[PyPI](https://pypi.org)和[TestPyPI](https://test.pypi.org)。二者可以使用相同的用户名和密码, 但无法使用相同的验证邮箱。注册完毕后, 还需要配置 ```~/.pypirc```, 以便在接下来使用```twine```时, 对正式发布与测试发布进行区分。```~/.pypirc```样板如下:
 
 
 ```bash
+
 [distutils]
 index-servers=
     pypi
     testpypi # 很多人设置成pypitest, 这里延用官方手册的写法, 使用testpypi, 可以减少错误输入参数导致的误操作。
 
 [pypi]
-repository: https://upload.pypi.org/legacy/ 
+repository: https://upload.pypi.org/legacy/
     # 这里不推荐标明repository, 更加保险的方式是交给twine自己解决。
     # 在过去的版本中, 这一地址曾数次更动, 会导致发布失败。
     # 因此不在这里指明地址, 交给twine, 并保持更新twine更可靠。
-username: real_account 
+username: real_account
     # pypi的注册用户名
-password: 123456 
+password: 123456
     # 密码字段可以不写, 在发布时再输入
 
 [testpypi]
-repository: https://test.pypi.org/legacy/ 
+repository: https://test.pypi.org/legacy/
     # 测试包发布仓库。
-username: test_account 
+username: test_account
     # pypi的注册用户名
-password: 654321 
+password: 654321
     # 密码字段可以不写, 在发布时再输入
+
 ```
 
 ## 3. 打包+发布

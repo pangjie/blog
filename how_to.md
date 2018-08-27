@@ -26,7 +26,7 @@ Added  ```/usr/local/bin/zsh``` to the end.
 
 It's only on Py2. Py3 doesn't have this warning.
 
-Reinstall with previous version also works. ```numpy<=1.14.5``` or ```pandas<=0.23.0``` 
+Reinstall with previous version also works. ```numpy<=1.14.5``` or ```pandas<=0.23.0```
 
 ## Tensorflow: pip install tensorflow 2018/08/16
 
